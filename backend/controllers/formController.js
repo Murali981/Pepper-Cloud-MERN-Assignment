@@ -1,4 +1,3 @@
-// backend/controllers/formController.js
 const Form = require("../models/Form");
 
 // Get all forms
@@ -84,7 +83,7 @@ exports.deleteForm = async (req, res) => {
   }
 };
 
-// Submit form (Optional - for storing responses)
+// Submit form
 exports.submitForm = async (req, res) => {
   try {
     // Here you could add logic to store form responses if needed

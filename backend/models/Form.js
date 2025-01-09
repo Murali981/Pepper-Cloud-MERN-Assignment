@@ -1,6 +1,4 @@
-// backend/models/Form.js
 const mongoose = require("mongoose");
-
 const inputSchema = new mongoose.Schema({
   type: {
     type: String,
