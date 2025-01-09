@@ -15,12 +15,15 @@ const ViewForm = () => {
           `http://localhost:5000/api/forms/${id}`
         );
         setForm(response.data);
+        console.log(response.data);
+        console.log(response.data.inputs);
 
         // Initialize form data
         const initialData = {};
         response.data.inputs.forEach((input) => {
           initialData[input.title] = "";
         });
+        console.log(initialData);
         setFormData(initialData);
       } catch (error) {
         console.error("Error fetching form:", error);
@@ -34,10 +37,12 @@ const ViewForm = () => {
       ...prev,
       [title]: value,
     }));
+    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData);
     try {
       await axios.post(
         `http://localhost:5000/api/forms/${id}/submit`,

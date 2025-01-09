@@ -39,6 +39,7 @@ exports.createForm = async (req, res) => {
     });
 
     const savedForm = await form.save();
+    console.log(savedForm);
     res.status(201).json(savedForm);
   } catch (error) {
     res.status(400).json({ message: error.message });
