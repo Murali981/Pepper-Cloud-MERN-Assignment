@@ -61,7 +61,7 @@ const CreateForm = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("http://localhost:5000/api/forms", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/forms`, {
         title: formTitle,
         inputs,
       });

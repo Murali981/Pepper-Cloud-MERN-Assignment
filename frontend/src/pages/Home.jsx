@@ -14,7 +14,9 @@ const Home = () => {
 
   const fetchForms = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/forms");
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/forms`
+      );
       setForms(response.data);
       setError(null);
     } catch (error) {
@@ -28,7 +30,7 @@ const Home = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this form?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/forms/${id}`);
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/forms/${id}`);
         setForms(forms.filter((form) => form._id !== id));
       } catch (error) {
         console.error("Error deleting form:", error);

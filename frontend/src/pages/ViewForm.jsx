@@ -53,7 +53,7 @@ const ViewForm = () => {
     const fetchForm = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/forms/${id}`
+          `${import.meta.env.VITE_API_URL}/api/forms/${id}`
         );
         setForm(response.data);
 
@@ -112,7 +112,7 @@ const ViewForm = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/api/forms/${id}/submit`,
+        `${import.meta.env.VITE_API_URL}/api/forms/${id}/submit`,
         formData
       );
       alert("Form submitted successfully!");

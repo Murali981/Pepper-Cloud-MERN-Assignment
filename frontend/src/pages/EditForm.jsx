@@ -16,7 +16,7 @@ const EditForm = () => {
     const fetchForm = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/forms/${id}`
+          `${import.meta.env.VITE_API_URL}/api/forms/${id}`
         );
         setTitle(response.data.title);
         setInputs(response.data.inputs);
@@ -49,7 +49,7 @@ const EditForm = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/forms/${id}`, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/forms/${id}`, {
         title,
         inputs,
       });
