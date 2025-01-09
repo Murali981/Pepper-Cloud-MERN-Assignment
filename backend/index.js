@@ -1,25 +1,28 @@
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 const express = require("express");
 const cors = require("cors");
 const formRoutes = require("./routes/formRoutes");
 
-dotenv.config({ path: "./config.env" }); // This line loads the environment variables from the.env file where our configuration
+// dotenv.config({ path: "./config.env" }); // This line loads the environment variables from the.env file where our configuration
 // file is located. This dotenv.config() function will read (or) load the environment variables from the config.env file and save
 // them in the node.js environment variables.
 
-const DB = process.env.DATABASE.replace(
-  "<PASSWORD>",
-  process.env.DATABASE_PASSWORD
-);
+// const DB = process.env.DATABASE.replace(
+//   "<PASSWORD>",
+//   process.env.DATABASE_PASSWORD
+// );
 
 mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
+  .connect(
+    "mongodb+srv://josephstalin981:44ExXa53icEPI84S@cluster0.1oz6m.mongodb.net/formbuilder?retryWrites=true",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    }
+  )
   .then(() => {
     // The above mongoose.connect() function will return a promise , So to resolve the promise , We are using the
     // then() function and this then function will have an access to the con variable where it can access the connections object on it.
