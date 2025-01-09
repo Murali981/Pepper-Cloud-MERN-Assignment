@@ -58,7 +58,9 @@ const ViewForm = () => {
   useEffect(() => {
     const fetchForm = async () => {
       try {
-        const response = await api.getForm(id);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/forms/${id}`
+        );
         setForm(response.data);
 
         // Initialize form data and errors
