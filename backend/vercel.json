@@ -11,9 +11,5 @@
       "src": "/(.*)",
       "dest": "index.js"
     }
-  ],
-  "env": {
-    "DATABASE": "@database",
-    "DATABASE_PASSWORD": "@database_password"
-  }
+  ]
 }
