@@ -10,58 +10,53 @@ const ViewForm = () => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
 
-  // Validation rules
-  const validateField = (type, value, title) => {
+  // Validation rules for different input types
+  const validateInput = (type, value, title) => {
     switch (type.toLowerCase()) {
       case "number":
         if (title.toLowerCase().includes("phone")) {
+          // Phone number validation
           const phoneRegex = /^\d{10}$/;
-          if (!phoneRegex.test(value)) {
-            return "Phone number must be exactly 10 digits";
-          }
-        } else if (isNaN(value) || value === "") {
-          return "Please enter a valid number";
+          return phoneRegex.test(value)
+            ? ""
+            : "Phone number must be exactly 10 digits";
         }
-        break;
+        // Other number validations
+        return isNaN(value) ? "Must be a valid number" : "";
 
       case "email":
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value)) {
-          return "Please enter a valid email address";
-        }
-        break;
+        return emailRegex.test(value) ? "" : "Invalid email address";
 
       case "password":
-        if (value.length < 8) {
-          return "Password must be at least 8 characters";
-        }
-        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
-          return "Password must contain uppercase, lowercase and numbers";
-        }
-        break;
+        // Password must be at least 8 characters, contain uppercase, lowercase, number
+        const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        return passwordRegex.test(value)
+          ? ""
+          : "Password must be at least 8 characters with uppercase, lowercase and numbers";
 
       case "date":
-        if (!value || isNaN(new Date(value).getTime())) {
-          return "Please enter a valid date";
-        }
-        break;
+        const dateValue = new Date(value);
+        return dateValue instanceof Date && !isNaN(dateValue)
+          ? ""
+          : "Please enter a valid date";
 
       case "text":
-        if (value.trim().length < 2) {
-          return "This field must have at least 2 characters";
-        }
-        break;
+        return value.trim().length < 2 ? "Must be at least 2 characters" : "";
+
+      default:
+        return "";
     }
-    return "";
   };
 
   useEffect(() => {
     const fetchForm = async () => {
       try {
-        const response = await api.getForm(id);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/forms/${id}`
+        );
         setForm(response.data);
 
-        // Initialize form data and errors
         const initialData = {};
         const initialErrors = {};
         response.data.inputs.forEach((input) => {
@@ -77,18 +72,17 @@ const ViewForm = () => {
     fetchForm();
   }, [id]);
 
-  const handleInputChange = (input, value) => {
-    // Update form data
+  const handleInputChange = (title, value, type) => {
     setFormData((prev) => ({
       ...prev,
-      [input.title]: value,
+      [title]: value,
     }));
 
-    // Validate and update errors
-    const error = validateField(input.type, value, input.title);
+    // Validate on change
+    const error = validateInput(type, value, title);
     setErrors((prev) => ({
       ...prev,
-      [input.title]: error,
+      [title]: error,
     }));
   };
 
@@ -96,11 +90,11 @@ const ViewForm = () => {
     e.preventDefault();
 
     // Validate all fields before submission
-    let hasErrors = false;
     const newErrors = {};
+    let hasErrors = false;
 
     form.inputs.forEach((input) => {
-      const error = validateField(
+      const error = validateInput(
         input.type,
         formData[input.title],
         input.title
@@ -113,7 +107,6 @@ const ViewForm = () => {
 
     if (hasErrors) {
       setErrors(newErrors);
-      alert("Please fix all errors before submitting");
       return;
     }
 
@@ -125,11 +118,13 @@ const ViewForm = () => {
       alert("Form submitted successfully!");
       // Reset form
       const resetData = {};
+      const resetErrors = {};
       form.inputs.forEach((input) => {
         resetData[input.title] = "";
+        resetErrors[input.title] = "";
       });
       setFormData(resetData);
-      setErrors({});
+      setErrors(resetErrors);
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Error submitting form");
@@ -142,7 +137,7 @@ const ViewForm = () => {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold mb-8">{form.title}</h1>
 
-      <form onSubmit={handleSubmit} noValidate>
+      <form onSubmit={handleSubmit}>
         <div className="space-y-6">
           {form.inputs.map((input, index) => (
             <div key={index} className="space-y-1">
@@ -152,9 +147,11 @@ const ViewForm = () => {
               <input
                 type={input.type.toLowerCase()}
                 placeholder={input.placeholder}
-                value={formData[input.title] || ""}
-                onChange={(e) => handleInputChange(input, e.target.value)}
-                className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 
+                value={formData[input.title]}
+                onChange={(e) =>
+                  handleInputChange(input.title, e.target.value, input.type)
+                }
+                className={`w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                   ${
                     errors[input.title] ? "border-red-500" : "border-gray-300"
                   }`}
