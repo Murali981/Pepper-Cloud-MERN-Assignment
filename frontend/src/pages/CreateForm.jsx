@@ -75,7 +75,7 @@ const CreateForm = () => {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-2xl text-center mb-8">Create New Form</h1>
 
-      <div className="grid grid-cols-2 ">
+      <div className="grid grid-cols-2 gap-8 ">
         {/* Left Column - Form Preview */}
         <div className="bg-white px-6 py-12 rounded-lg shadow">
           <div className="flex items-center justify-between mb-6">
