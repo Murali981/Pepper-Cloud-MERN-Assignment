@@ -40,7 +40,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://pepper-cloud-mern-assignment-frontend.vercel.app/",
+      "https://pepper-cloud-mern-assignment-frontend.vercel.app",
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
