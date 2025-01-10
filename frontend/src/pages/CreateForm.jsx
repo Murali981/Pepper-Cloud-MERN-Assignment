@@ -47,6 +47,11 @@ const CreateForm = () => {
   };
 
   const handleInputSave = (inputData) => {
+    if (inputs.length >= 20) {
+      alert("Maximum limit of 20 inputs reached!");
+      return;
+    }
+
     if (inputData.index !== undefined) {
       // Edit existing input
       setInputs(
@@ -58,6 +63,8 @@ const CreateForm = () => {
     }
     setCurrentInput(null);
   };
+
+  const isInputLimitReached = inputs.length >= 20;
 
   const handleSubmit = async () => {
     try {
@@ -149,10 +156,21 @@ const CreateForm = () => {
           <div className="text-center">
             <button
               onClick={toggleInputTypes}
-              className="w-[150px]  py-2 mt-4 bg-blue-100  text-blue-700  rounded"
+              disabled={isInputLimitReached}
+              className={`w-[150px] py-2 mt-4 rounded
+                ${
+                  isInputLimitReached
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                }`}
             >
               {showInputTypes ? "CLOSE ADD INPUT" : "ADD INPUT"}
             </button>
+            {isInputLimitReached && (
+              <p className="text-red-500 text-sm mt-2">
+                Maximum limit of 20 inputs reached
+              </p>
+            )}
           </div>
 
           {showInputTypes && (
