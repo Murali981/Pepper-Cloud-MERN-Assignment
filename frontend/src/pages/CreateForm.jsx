@@ -67,6 +67,7 @@ const CreateForm = () => {
   const isInputLimitReached = inputs.length >= 20;
 
   const handleSubmit = async () => {
+    console.log("handle submit is clicked");
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/forms`, {
         title: formTitle,
