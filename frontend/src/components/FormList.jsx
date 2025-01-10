@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const FormList = ({ forms, onDelete }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mt-3">
       {forms.length === 0 ? (
         <div className="text-left py-8 text-gray-500">
           No forms created yet.
